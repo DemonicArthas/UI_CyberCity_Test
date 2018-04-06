@@ -5,17 +5,18 @@ using UnityEngine.UI;
 public class Loc_CyberCity_Controller : MonoBehaviour {
 
 	public GameObject currentScreen;
-	public Text screen3Input;
-	public GameObject screen4;
-	public GameObject screen5;
-	public Text screen3Text;
-	public GameObject player;
-
+    public GameObject alleyEmpty;
+    public GameObject alleyDefault;
+    public GameObject outpostScreen;
+    public GameObject player;
+    public Button passwordButton;
+    public bool passwordKnown;
 	PlayerController playerController;
 
 	void Awake() {
 		playerController = player.GetComponent<PlayerController> ();
-	}
+        passwordKnown = false;
+    }
 
 	public void ChangeScreen(GameObject newScreen) {
 		currentScreen.SetActive (false);
@@ -24,30 +25,67 @@ public class Loc_CyberCity_Controller : MonoBehaviour {
 	}
 
     public void EatReturn(GameObject newScreen) {
-        currentScreen.SetActive(false);
-        currentScreen = newScreen;
-        currentScreen.SetActive(true);
-        playerController.PlayerHeal(20);
+        if (playerController.money > 10) {
+            currentScreen.SetActive(false);
+            currentScreen = newScreen;
+            currentScreen.SetActive(true);
+            playerController.AddMoney(-20);
+            playerController.PlayerHeal(20);
+        }
     }
 
     public void SadReturn(GameObject newScreen) {
+        playerController.PlayerDamage(1);
         currentScreen.SetActive(false);
         currentScreen = newScreen;
         currentScreen.SetActive(true);
-        playerController.PlayerDamage(5);
     }
 
-	public void GivePassword() { 
-		string password = screen3Input.text;
-		if (password == "Way") {
-			ChangeScreen (screen4);
-		} else {
-            screen3Text.text = "Неверный пароль";
-		}
-	}
+    public void GoToAlley() {
+        if (passwordKnown == true) {
+            ChangeScreen(alleyEmpty);
+        }
+        else {
+            ChangeScreen(alleyDefault);
+        }
+    }
 
-	public void GetBeatenDamage() {
+    public void PasswordBuy(GameObject newScreen)
+    {
+        if (playerController.money > 75)
+        {
+            passwordKnown = true;
+            currentScreen.SetActive(false);
+            currentScreen = newScreen;
+            currentScreen.SetActive(true);
+        }
+    }
+
+    public void PasswordTake(GameObject newScreen) {
+        passwordKnown = true;
+        playerController.PlayerDamage(15);
+            currentScreen.SetActive(false);
+            currentScreen = newScreen;
+            currentScreen.SetActive(true);
+        }
+
+     public void PasswordCheck() { 
+		if (passwordKnown == true) {
+            passwordButton.interactable = true;
+        }
+        ChangeScreen(outpostScreen);
+    }
+
+	public void GetBeatenScreen(GameObject newScreen) {
 		playerController.PlayerDamage (10);
-	}
-		
+        currentScreen.SetActive(false);
+        currentScreen = newScreen;
+        currentScreen.SetActive(true);
+    }
+
+    public void EscapeScreen(GameObject newScreen) {
+        currentScreen.SetActive(false);
+        currentScreen = newScreen;
+        currentScreen.SetActive(true);
+    }
 }
