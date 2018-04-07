@@ -11,7 +11,9 @@ public class Loc_CyberCity_Controller : MonoBehaviour {
     public GameObject player;
     public Button passwordButton;
     public bool passwordKnown;
-	PlayerController playerController;
+    public GameObject BGImage;
+    public GameObject ShineBG;
+    PlayerController playerController;
 
 	void Awake() {
 		playerController = player.GetComponent<PlayerController> ();
@@ -83,9 +85,17 @@ public class Loc_CyberCity_Controller : MonoBehaviour {
         currentScreen.SetActive(true);
     }
 
+    public void EscapeBG(GameObject newBGImage)
+    {
+        BGImage.SetActive(false);
+        BGImage = newBGImage;
+        BGImage.SetActive(true);
+    }
     public void EscapeScreen(GameObject newScreen) {
+        EscapeBG (ShineBG);
         currentScreen.SetActive(false);
         currentScreen = newScreen;
         currentScreen.SetActive(true);
     }
+
 }
