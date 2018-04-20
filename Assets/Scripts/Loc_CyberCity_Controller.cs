@@ -10,7 +10,7 @@ public class Loc_CyberCity_Controller : MonoBehaviour {
     public GameObject outpostScreen;
     public GameObject player;
     public Button passwordButton;
-    public bool passwordKnown;
+    bool passwordKnown;
     public GameObject BGImage;
     public GameObject ShineBG;
     PlayerController playerController;
